@@ -3290,7 +3290,7 @@ function openLookupDetail(id){const w=[...LOOKUP_RH_WEAPONS,...LOOKUP_LH_WEAPONS
  const ns=w.numericScaling||{};const maxScaleStats=[lookupStat('str',Number(ns.str)>0?Number(ns.str).toFixed(2):'—','Strength scaling +10'),lookupStat('skl',Number(ns.skl)>0?Number(ns.skl).toFixed(2):'—','Skill scaling +10'),lookupStat('blt',Number(ns.blt)>0?Number(ns.blt).toFixed(2):'—','Bloodtinge scaling +10'),lookupStat('arc',Number(ns.arc)>0?Number(ns.arc).toFixed(2):'—','Arcane scaling +10')].join('');
  const socketPreview=socketRowsHTML(w,true);
  const utility=w.hand==='lh'?`<div class="v04-weapon-utility-item">${lookupIcon('durability')}<span><small>ĐỘ BỀN</small><b>${w.durability||'—'}</b></span></div><div class="v04-weapon-utility-item">${lookupIcon('qs')}<span><small>QS BULLET / LẦN DÙNG</small><b>${w.bullet??'—'}</b></span></div>`:`<div class="v04-weapon-utility-item">${lookupIcon('durability')}<span><small>ĐỘ BỀN</small><b>${w.durability||'—'}</b></span></div><div class="v04-weapon-utility-item"><span class="v04-rally-icon">R</span><span><small>RALLY</small><b>${w.rally??'—'}${w.rally!=null?' HP':''}</b></span></div>`;
- $('lookupDetailBody').innerHTML=`<div class="lookup-detail-head"><img src="${w.icon}" alt=""><div><p class="eyebrow">${w.hand==='rh'?'VŨ KHÍ TAY PHẢI':'VŨ KHÍ TAY TRÁI'}</p><h2>${escapeHTML(w.name)}</h2><p class="v04-weapon-headline">${w.hand==='rh'?'Vũ khí biến hình':'Vũ khí tay trái'} · ${w.dlc?'The Old Hunters':'Main Game'}</p><div class="lookup-detail-meta"><span>${w.dlc?'THE OLD HUNTERS':'MAIN GAME'}</span></div><div class="v04-weapon-utility">${utility}</div></div></div><div class="lookup-detail-tabs"><button class="active" data-lookup-tab="base">TỔNG QUAN</button><button data-lookup-tab="upgrade">NÂNG CẤP +0 → +10</button><button data-lookup-tab="sockets">SOCKET BLOOD GEM</button></div><div class="lookup-tabpane" data-lookup-pane="base"><div class="lookup-overview-grid"><div><div class="lookup-block v04-weapon-block first"><h4>SÁT THƯƠNG CƠ BẢN (+0)</h4><div class="lookup-stat-grid">${baseStats}</div></div><div class="lookup-block v04-weapon-block"><h4>YÊU CẦU CHỈ SỐ</h4><p class="v04-block-help">Chỉ số tối thiểu để sử dụng vũ khí hiệu quả.</p><div class="lookup-stat-grid">${req}</div></div><div class="lookup-block v04-weapon-block"><h4>SCALING CƠ BẢN (+0)</h4><p class="v04-block-help">Chữ càng cao (E → D → C → B → A → S), vũ khí càng hưởng lợi từ chỉ số đó.</p><div class="lookup-stat-grid lookup-stat-grid-scale">${grades}</div></div></div><aside class="lookup-overview-card"><h4>SOCKET BLOOD GEM</h4>${socketPreview}</aside></div><div class="lookup-block v04-weapon-block"><h4>SÁT THƯƠNG Ở +10</h4><div class="lookup-stat-grid">${maxDamageStats}</div></div><div class="lookup-block v04-weapon-block"><h4>SCALING Ở +10</h4><div class="lookup-stat-grid lookup-stat-grid-scale">${maxScaleStats}</div></div>${v04WeaponAcquisitionHTML(w)}<a class="lookup-source" href="${src}" target="_blank" rel="noopener">Bloodborne Wiki · nguồn dữ liệu ↗</a></div><div class="lookup-tabpane" data-lookup-pane="upgrade" hidden><div class="lookup-block"><h4>BẢNG NÂNG CẤP</h4>${renderUpgradeTable(w)}<div class="lookup-materials"><div class="lookup-material"><img src="${LOOKUP_MATERIAL_ICONS.shard}" alt="Blood Stone Shard"><b>16</b><small>BLOOD STONE SHARDS</small></div><div class="lookup-material"><img src="${LOOKUP_MATERIAL_ICONS.twin}" alt="Twin Blood Stone Shards"><b>16</b><small>TWIN BLOOD STONE SHARDS</small></div><div class="lookup-material"><img src="${LOOKUP_MATERIAL_ICONS.chunk}" alt="Blood Stone Chunk"><b>16</b><small>BLOOD STONE CHUNKS</small></div><div class="lookup-material"><img src="${LOOKUP_MATERIAL_ICONS.rock}" alt="Blood Rock"><b>1</b><small>BLOOD ROCK</small></div></div></div><a class="lookup-source" href="${src}" target="_blank" rel="noopener">Mở bảng nâng cấp nguồn ↗</a></div><div class="lookup-tabpane" data-lookup-pane="sockets" hidden><div class="lookup-block"><h4>SOCKET / IMPRINT BLOOD GEM</h4>${socketCardsHTML(w)}<p class="lookup-source-note">Vũ khí tay phải có tối đa 3 slot. Phiên bản Normal / Uncanny / Lost có thể dùng cấu hình socket khác nhau; một số vũ khí tay trái có 1 Circle slot.</p></div><a class="lookup-source" href="https://www.bloodborne-wiki.com/p/blood-gems.html" target="_blank" rel="noopener">Bloodborne Wiki · Blood Gems ↗</a></div>`;
+ $('lookupDetailBody').innerHTML=`<div class="lookup-detail-head"><img src="${w.icon}" alt=""><div><p class="eyebrow">${w.hand==='rh'?'VŨ KHÍ TAY PHẢI':'VŨ KHÍ TAY TRÁI'}</p><h2>${escapeHTML(w.name)}</h2><p class="v04-weapon-headline">${w.hand==='rh'?'Vũ khí biến hình':'Vũ khí tay trái'} · ${w.dlc?'The Old Hunters':'Main Game'}</p><div class="lookup-detail-meta"><span>${w.dlc?'THE OLD HUNTERS':'MAIN GAME'}</span></div><div class="v04-weapon-utility">${utility}</div>${w.hand==='rh'?'<p class="v04-utility-help">Rally = lượng HP vừa mất có thể hồi lại nếu đánh trả kịp thời.</p>':''}</div></div><div class="lookup-detail-tabs"><button class="active" data-lookup-tab="base">TỔNG QUAN</button><button data-lookup-tab="upgrade">NÂNG CẤP +0 → +10</button><button data-lookup-tab="sockets">SOCKET BLOOD GEM</button></div><div class="lookup-tabpane" data-lookup-pane="base"><div class="lookup-overview-grid"><div><div class="lookup-block v04-weapon-block first"><h4>SÁT THƯƠNG CƠ BẢN (+0)</h4><div class="lookup-stat-grid">${baseStats}</div></div><div class="lookup-block v04-weapon-block"><h4>YÊU CẦU CHỈ SỐ</h4><p class="v04-block-help">Chỉ số tối thiểu để sử dụng vũ khí hiệu quả.</p><p class="v04-stat-legend">STR = Strength · SKL = Skill · BLT = Bloodtinge · ARC = Arcane</p><div class="lookup-stat-grid">${req}</div></div><div class="lookup-block v04-weapon-block"><h4>SCALING CƠ BẢN (+0)</h4><p class="v04-block-help">Chữ càng cao (E → D → C → B → A → S), vũ khí càng hưởng lợi từ chỉ số đó.</p><p class="v04-stat-legend">STR = Strength · SKL = Skill · BLT = Bloodtinge · ARC = Arcane</p><div class="lookup-stat-grid lookup-stat-grid-scale">${grades}</div></div></div><aside class="lookup-overview-card"><h4>SOCKET BLOOD GEM</h4>${socketPreview}</aside></div><div class="lookup-block v04-weapon-block"><h4>SÁT THƯƠNG Ở +10</h4><div class="lookup-stat-grid">${maxDamageStats}</div></div><div class="lookup-block v04-weapon-block"><h4>SCALING Ở +10</h4><div class="lookup-stat-grid lookup-stat-grid-scale">${maxScaleStats}</div></div>${v04WeaponAcquisitionHTML(w)}<a class="lookup-source" href="${src}" target="_blank" rel="noopener">Bloodborne Wiki · nguồn dữ liệu ↗</a></div><div class="lookup-tabpane" data-lookup-pane="upgrade" hidden><div class="lookup-block"><h4>BẢNG NÂNG CẤP</h4>${renderUpgradeTable(w)}<div class="lookup-materials"><div class="lookup-material"><img src="${LOOKUP_MATERIAL_ICONS.shard}" alt="Blood Stone Shard"><b>16</b><small>BLOOD STONE SHARDS</small></div><div class="lookup-material"><img src="${LOOKUP_MATERIAL_ICONS.twin}" alt="Twin Blood Stone Shards"><b>16</b><small>TWIN BLOOD STONE SHARDS</small></div><div class="lookup-material"><img src="${LOOKUP_MATERIAL_ICONS.chunk}" alt="Blood Stone Chunk"><b>16</b><small>BLOOD STONE CHUNKS</small></div><div class="lookup-material"><img src="${LOOKUP_MATERIAL_ICONS.rock}" alt="Blood Rock"><b>1</b><small>BLOOD ROCK</small></div></div></div><a class="lookup-source" href="${src}" target="_blank" rel="noopener">Mở bảng nâng cấp nguồn ↗</a></div><div class="lookup-tabpane" data-lookup-pane="sockets" hidden><div class="lookup-block"><h4>SOCKET / IMPRINT BLOOD GEM</h4>${socketCardsHTML(w)}<p class="lookup-source-note">Vũ khí tay phải có tối đa 3 slot. Phiên bản Normal / Uncanny / Lost có thể dùng cấu hình socket khác nhau; một số vũ khí tay trái có 1 Circle slot.</p></div><a class="lookup-source" href="https://www.bloodborne-wiki.com/p/blood-gems.html" target="_blank" rel="noopener">Bloodborne Wiki · Blood Gems ↗</a></div>`;
  $('lookupDetailDialog').scrollTop=0;$('lookupDetailDialog').showModal();
 }
 
@@ -4438,7 +4438,235 @@ openLookupDetail=function(id){
 .v04-rally-icon{display:grid;place-items:center;width:24px;height:24px;border:1px solid #6d6243;color:#d5bb70;font-family:Georgia,serif;font-weight:700;background:#171712}
 .v04-weapon-block.first{margin-top:0}
 .v04-weapon-block h4{margin-bottom:8px!important}
-.v04-block-help{margin:-2px 0 10px;color:#858f91;font-size:10px;line-height:1.45}
+.v04-block-help{margin:-2px 0 5px;color:#858f91;font-size:10px;line-height:1.45}
+.v04-stat-legend,.v04-utility-help{margin:0 0 10px;color:#a79a74;font-size:9px;line-height:1.45}
+.v04-utility-help{margin:7px 0 0;color:#858f91}
 @media(max-width:640px){.v04-weapon-utility-item{min-width:0;flex:1 1 140px}.v04-block-help{font-size:9px}}
 </style>
+
+
+<!-- V0.5 KEY ITEMS LIST — COMPACT; DETAILS STAY IN POPUP -->
+<style id="v05-keyitems-list-style">
+#lookupList[data-v05-cat="keyitems"] .lookup-key-v05{align-items:center;min-height:82px}
+#lookupList[data-v05-cat="keyitems"] .lookup-key-v05>div:nth-child(2){min-width:0}
+#lookupList[data-v05-cat="keyitems"] .lookup-key-v05-summary{
+  margin:2px 0 0!important;color:#a9b0b0!important;font-size:10px!important;line-height:1.45!important;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden
+}
+#lookupList[data-v05-cat="keyitems"] .lookup-key-v05-kind{
+  display:inline-flex;margin-top:6px;padding:3px 7px;border:1px solid rgba(170,135,62,.45);
+  background:rgba(170,135,62,.08);color:#cdb56f;font:800 7px/1.2 "Segoe UI",Tahoma,Arial,sans-serif;
+  letter-spacing:.09em;text-transform:uppercase
+}
+#lookupList[data-v05-cat="keyitems"] .lookup-key-card-line{display:none!important}
+@media(max-width:680px){
+  #lookupList[data-v05-cat="keyitems"] .lookup-key-v05{min-height:74px}
+  #lookupList[data-v05-cat="keyitems"] .lookup-key-v05-summary{font-size:9px!important;-webkit-line-clamp:2}
+}
+</style>
+<script id="v05-keyitems-list-js">
+(()=>{
+  try{
+    const prevV05Render=renderLookupList;
+    renderLookupList=function(){
+      if(lookupCategory!=='keyitems')return prevV05Render.apply(this,arguments);
+      const list=$('lookupList');
+      if(list){list.dataset.v05Cat='keyitems';list.dataset.v04Cat='keyitems';}
+      const data=LOOKUP_EXTRA_DATA.keys||[];
+      const q=$('lookupSearch').value.trim().toLocaleLowerCase('vi');
+      const filter=$('lookupPart').value;
+      const rows=data.filter(it=>{
+        const where=typeof keyLocation==='function'?keyLocation(it):'';
+        const use=typeof keyUse==='function'?keyUse(it):'';
+        const hay=[it.name,it.summary,it.sub,it.kind,where,use].join(' ').toLocaleLowerCase('vi');
+        if(q&&!hay.includes(q))return false;
+        return filter==='all'||(filter==='dlc'&&it.dlc)||(filter==='main'&&!it.dlc);
+      });
+      const source=LOOKUP_EXTRA_SOURCES.keys||'';
+      $('lookupSummary').innerHTML=`${rows.length} / ${data.length} mục${source?` · nguồn <a href="${source}" target="_blank" rel="noopener" style="color:#b9a56e">Bloodborne Wiki ↗</a>`:''}`;
+      $('lookupList').innerHTML=rows.length?rows.map(it=>{
+        const use=typeof keyUse==='function'?keyUse(it):'';
+        const raw=String(it.summary||use||'Vật phẩm chìa khóa');
+        const summary=typeof lookupViText==='function'?lookupViText(raw):raw;
+        return `<button type="button" class="lookup-item lookup-key-v05" data-lookup-item="${it.id}"><img src="${genericItemIcon(it)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="lookupImgFallback(this)"><div><h4>${escapeHTML(it.name)}</h4><p class="lookup-key-v05-summary">${escapeHTML(summary)}</p><span class="lookup-key-v05-kind">VẬT PHẨM CHÌA KHÓA</span></div>${it.dlc?'<span class="lookup-dlc">OLD HUNTERS</span>':''}</button>`;
+      }).join(''):'<div class="lookup-placeholder"><strong>Không có kết quả</strong>Đổi từ khóa hoặc bộ lọc.</div>';
+    };
+    if(typeof viewName!=='undefined'&&viewName==='lookup'&&lookupCategory==='keyitems')renderLookupList();
+  }catch(e){console.warn('v0.5 key items compact list',e)}
+})();
+</script>
+
+
+<!-- V0.5 KEY ITEMS — DYNAMIC PROGRESS/MAP STATUS -->
+<style id="v05-keyitems-status-style">
+#lookupList[data-v05-cat="keyitems"] .lookup-key-v05{align-items:center;min-height:72px}
+#lookupList[data-v05-cat="keyitems"] .lookup-key-v05>div:nth-child(2){min-width:0}
+#lookupList[data-v05-cat="keyitems"] .lookup-key-v05 h4{margin:0!important}
+#lookupList[data-v05-cat="keyitems"] .lookup-key-v05-summary,
+#lookupList[data-v05-cat="keyitems"] .lookup-key-v05-kind{display:none!important}
+.v05-key-status{
+ display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;
+ margin-top:0;padding:5px 8px;border:1px solid #465055;background:#111619;
+ color:#9ba4a7;font:800 8px/1.1 "Segoe UI",Tahoma,Arial,sans-serif;letter-spacing:.08em
+}
+.v05-key-status.notyet{border-color:#465055;color:#919a9c;background:#111619}
+.v05-key-status.ready{border-color:#826b35;color:#e0c36e;background:rgba(130,107,53,.14)}
+.v05-key-status.owned{border-color:#506a72;color:#a9c4c8;background:rgba(80,106,114,.13)}
+.v05-key-status.used{border-color:#52705c;color:#a9cfb3;background:rgba(82,112,92,.14)}
+#lookupList[data-v05-cat="keyitems"] .lookup-dlc{margin-top:6px}
+@media(max-width:680px){
+ #lookupList[data-v05-cat="keyitems"] .lookup-key-v05{min-height:66px}
+ .v05-key-status{font-size:7px;padding:4px 6px}
+}
+</style>
+<script id="v05-keyitems-status-js">
+(()=>{
+ try{
+  const KEY_FLOW={
+   'k-cainhurst':{
+    acquire:['wiki-clinic-2','r-clinic-forest-3','q-route-12-2'],
+    use:['wiki-cainhurst-1','r-cainhurst-1','q-route-13-2'],
+    zones:['clinic','woods'], usedLabel:'ĐÃ MỞ CAINHURST'
+   },
+   'k-chief':{
+    ready:['wiki-central-5','r-central-3'],
+    use:['wiki-cathedral-3','r-workshop-6','q-route-9-3'],
+    zones:[], readyLabel:'NÊN MUA KEY',usedLabel:'ĐÃ MỞ CỔNG'
+   },
+   'k-iron':{
+    acquire:['r-yahargul-8'],zones:['mensis'],usedLabel:'ĐÃ MỞ CỔNG'
+   },
+   'k-lecture':{
+    acquire:['wiki-lecture-2','r-bloodmoon-side-5'],zones:['lecture'],usedLabel:'ĐÃ MỞ PHÒNG'
+   },
+   'k-lunarium':{
+    acquire:['wiki-byrgen-1'],use:['wiki-byrgen-4','r-byrgen-5'],zones:['byrgen'],usedLabel:'ĐÃ MỞ LUNARIUM'
+   },
+   'k-oedon':{
+    acquire:['wiki-central-6','r-central-9','q-route-2-1'],use:['wiki-central-6','r-central-9','q-route-2-1'],
+    zones:['central'],usedLabel:'ĐÃ MỞ ĐƯỜNG'
+   },
+   'k-bell':{
+    acquire:['r-central-4'],ready:['wiki-dream-2'],zones:[],readyLabel:'NÊN NHẬN BELL',ownedLabel:'ĐÃ NHẬN BELL'
+   },
+   'k-orphanage':{
+    acquire:['wiki-upper-2','r-upper-mensis-3'],use:['wiki-upper-3','r-upper-mensis-4'],zones:['upper'],usedLabel:'ĐÃ MỞ ORPHANAGE'
+   },
+   'k-short':{
+    ready:['r-chalice-pthumeru-2'],readyLabel:'CÓ THỂ MUA',ownedLabel:'ĐÃ LẤY CHALICE'
+   },
+   'k-hair':{
+    acquire:['r-workshop-4'],use:['r-workshop-7'],zones:['workshop'],usedLabel:'ĐÃ ĐƯA CHO DOLL'
+   },
+   'k-tonsil':{
+    acquire:['r-hemwick-woods-3'],use:['wiki-lecture-1','r-bloodmoon-side-4'],zones:['woods'],usedLabel:'ĐÃ MỞ LECTURE BUILDING'
+   },
+   'k-eye':{
+    acquire:['r-night-1'],ready:['wiki-cathedral-6','r-workshop-9','q-route-10-1'],use:['r-dlc-nightmare-1'],
+    zones:[],usedLabel:'ĐÃ MỞ DLC'
+   },
+   'k-pendant':{
+    acquire:['r-dlc-nightmare-3'],use:['r-dlc-ludwig-4'],zones:['huntersnightmare'],usedLabel:'ĐÃ MỞ RESEARCH HALL'
+   },
+   'k-skull':{
+    acquire:['r-dlc-ludwig-5'],use:['r-dlc-laurence-2'],zones:['research','laurence'],usedLabel:'ĐÃ KÍCH HOẠT BOSS'
+   }
+  };
+
+  function allChecked(){
+   const out=new Set();
+   try{for(const g of Object.keys(state.progress||{}))for(const id of (state.progress[g]?.checked||[]))out.add(id);}catch(e){}
+   return out;
+  }
+  function anyChecked(ids,set){return (ids||[]).some(id=>set.has(id));}
+  function refArea(ref){
+   try{
+    for(const gid of Object.keys(GUIDES))for(const area of GUIDES[gid].areas){
+     if(area.items.some(it=>it.id===ref))return {gid,area};
+    }
+   }catch(e){}
+   return null;
+  }
+  function progressReached(flow,set){
+   if(anyChecked(flow.ready,set)||anyChecked(flow.acquire,set)||anyChecked(flow.use,set))return true;
+   try{
+    const activeAreas=GUIDES[guideId]?.areas||[];
+    const curId=sessionState.progressArea?.[guideId];
+    const curIndex=activeAreas.findIndex(a=>a.id===curId);
+    if(curIndex>=0){
+     for(const ref of (flow.acquire||[])){
+      const hit=refArea(ref); if(!hit||hit.gid!==guideId)continue;
+      const targetIndex=activeAreas.findIndex(a=>a.id===hit.area.id);
+      if(targetIndex>=0&&activeAreas[targetIndex].group===activeAreas[curIndex].group&&curIndex>=targetIndex)return true;
+     }
+    }
+    for(const ref of (flow.acquire||[])){
+     const hit=refArea(ref); if(!hit)continue;
+     const done=new Set(state.progress?.[hit.gid]?.checked||[]);
+     if(hit.area.items.some(it=>done.has(it.id)))return true;
+    }
+   }catch(e){}
+   return false;
+  }
+  function mapOwned(it){
+   try{
+    for(const m of (lookupMapMatches(it)||[])){
+     const done=new Set(Array.isArray(mapChecklistState[m.spec.key])?mapChecklistState[m.spec.key]:[]);
+     if(done.has(m.n))return true;
+    }
+   }catch(e){}
+   return false;
+  }
+  function mapReached(it,flow){
+   try{
+    const curArea=typeof mapCurrent==='function'?mapCurrent():null;
+    const curKey=visualKeyFromText(curArea?.name||'',curArea?.id||mapAreaId||'');
+    if(curKey&&(flow.zones||[]).includes(curKey))return true;
+    const curSpec=curArea&&typeof mapChecklistSpec==='function'?mapChecklistSpec(curArea):null;
+    if(curSpec){
+     for(const m of (lookupMapMatches(it)||[]))if(m.spec.key===curSpec.key)return true;
+    }
+   }catch(e){}
+   return false;
+  }
+  function keyStatus(it){
+   const flow=KEY_FLOW[it.id]||{};
+   const set=allChecked();
+   if(anyChecked(flow.use,set))return {id:'used',label:flow.usedLabel||'ĐÃ DÙNG'};
+   const owned=anyChecked(flow.acquire,set)||mapOwned(it);
+   if(owned)return {id:'owned',label:flow.ownedLabel||'ĐÃ LẤY KEY'};
+   const reached=progressReached(flow,set)||mapReached(it,flow);
+   if(reached)return {id:'ready',label:flow.readyLabel||'NÊN ĐI LẤY KEY'};
+   return {id:'notyet',label:'CHƯA TỚI'};
+  }
+
+  const prevStatusRender=renderLookupList;
+  renderLookupList=function(){
+   if(lookupCategory!=='keyitems')return prevStatusRender.apply(this,arguments);
+   const list=$('lookupList');
+   if(list){list.dataset.v05Cat='keyitems';list.dataset.v04Cat='keyitems';}
+   const data=LOOKUP_EXTRA_DATA.keys||[];
+   const q=$('lookupSearch').value.trim().toLocaleLowerCase('vi');
+   const filter=$('lookupPart').value;
+   const rows=data.filter(it=>{
+    const where=typeof keyLocation==='function'?keyLocation(it):'';
+    const use=typeof keyUse==='function'?keyUse(it):'';
+    const st=keyStatus(it);
+    const hay=[it.name,it.summary,it.sub,it.kind,where,use,st.label].join(' ').toLocaleLowerCase('vi');
+    if(q&&!hay.includes(q))return false;
+    return filter==='all'||(filter==='dlc'&&it.dlc)||(filter==='main'&&!it.dlc);
+   });
+   const source=LOOKUP_EXTRA_SOURCES.keys||'';
+   $('lookupSummary').innerHTML=`${rows.length} / ${data.length} mục · trạng thái tự đọc từ Progress + MAP${source?` · nguồn <a href="${source}" target="_blank" rel="noopener" style="color:#b9a56e">Bloodborne Wiki ↗</a>`:''}`;
+   $('lookupList').innerHTML=rows.length?rows.map(it=>{
+    const st=keyStatus(it);
+    return `<button type="button" class="lookup-item lookup-key-v05" data-lookup-item="${it.id}"><img src="${genericItemIcon(it)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="lookupImgFallback(this)"><div><h4>${escapeHTML(it.name)}</h4></div><div><span class="v05-key-status ${st.id}">${escapeHTML(st.label)}</span>${it.dlc?'<span class="lookup-dlc">OLD HUNTERS</span>':''}</div></button>`;
+   }).join(''):'<div class="lookup-placeholder"><strong>Không có kết quả</strong>Đổi từ khóa hoặc bộ lọc.</div>';
+  };
+
+  if(typeof viewName!=='undefined'&&viewName==='lookup'&&lookupCategory==='keyitems')renderLookupList();
+ }catch(e){console.warn('v0.5 dynamic key status',e)}
+})();
+</script>
+
 </body></html>
