@@ -2931,14 +2931,17 @@ const WIKI_AREA_HEROES={
  research:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhQ6zEYbY6s992dsGg1RAlUt85JL9ptbHwzr0qSHfs5I3-cLyo8bahx0gt88xSTGlD4Md-T5pDBcw6JWgyb73fwLdTPcIFq7cEaQaQH2ZW7xK3t0VXaDF6KeWbxGk6Ch2_P_ufkzeSerL1v/s1600/RESEARCH%2BHALL.png',hamlet:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjjH7l-JHuw3ZiC7nKLGDOct_FDT9JxLu2ETPmIuA7mSEY8NrpZASaXtCfvQe5DF7k0nuh8xzHXmcuKXIjCtqxXcdaWDyDj3MKmF1jyaARTkkCjo40-1-zLd7jZh8VIhvQVqMMx1QWOu3-4/s1600/HAMLET.png',
  pthumeru:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEW5d9mMBQqay2udtiAVs0w-ZJbtk-0tuseFAcjPBcZUyVHaVwUl48s18zonLbZHqMcMTcc-9SMsmjor9xLP_v-qphWyzFi5fBw9nEpAPG2ZKYWCuytNrvIqY3EMFRafLuJ2aYmO5KxKHlgMbQ_BKOcZVnXuaAD7jArjXxBG7-aSerr6Ggn8sTxc5Org/s1600/PTHUMERU.png',depths:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEW5d9mMBQqay2udtiAVs0w-ZJbtk-0tuseFAcjPBcZUyVHaVwUl48s18zonLbZHqMcMTcc-9SMsmjor9xLP_v-qphWyzFi5fBw9nEpAPG2ZKYWCuytNrvIqY3EMFRafLuJ2aYmO5KxKHlgMbQ_BKOcZVnXuaAD7jArjXxBG7-aSerr6Ggn8sTxc5Org/s1600/PTHUMERU.png'};
 function heroForArea(a){const k=a.mapKey||visualKeyFromText(a.name,a.id)||a.id;return WIKI_AREA_HEROES[k]||'';}
-function npcMatchesForItem(it,includeImpacts=true){
- const text=normText((it.title||'')+' '+(it.detail||''));const result=[];
- for(const npc of NPC_AREAS){const aliases=NPC_ALIAS[npc.id]||[normText(npc.name)];if(aliases.some(x=>text.includes(normText(x))))result.push(npc);}
- const impacts=[
-  ['father gascoigne',['q-main-eillen','q-main-litter-girl','q-main-gilbert']],['vicar amelia',['q-main-eillen','q-main-alfred','q-main-litter-girl']],['rom',['q-main-iosefka','q-main-arianna','q-main-adella','q-main-gilbert']],['micolash',['q-main-arianna']],['ludwig',['q-dlc-simon','q-dlc-yamamura','q-main-valtr']],['living failures',['q-dlc-yamamura']],['lady maria',['q-dlc-simon']]
- ];
- if(includeImpacts)for(const [kw,ids] of impacts)if(text.includes(kw))for(const id of ids){const n=NPC_AREAS.find(x=>x.id===id);if(n&&!result.includes(n))result.push(n);}
- return result.slice(0,4);
+function npcMatchesForItem(it){
+ // Progress checklist: chỉ tag NPC được nhắc trực tiếp trong TIÊU ĐỀ bước.
+ // Không suy diễn theo khu vực, boss hay NPC chỉ bị ảnh hưởng gián tiếp.
+ const title=normText(it&&it.title||'');
+ if(!title)return [];
+ const result=[];
+ for(const npc of NPC_AREAS){
+   const aliases=NPC_ALIAS[npc.id]||[normText(npc.name)];
+   if(aliases.some(x=>{const a=normText(x);return a&&title.includes(a);})){result.push(npc);}
+ }
+ return result.slice(0,2);
 }
 
 const NPC_PORTRAITS={
