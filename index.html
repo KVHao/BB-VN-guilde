@@ -4740,11 +4740,95 @@ openLookupDetail=function(id){
 .bb-chat-compose{display:grid;grid-template-columns:1fr auto;gap:8px;padding:11px;border-top:1px solid #3a2227;background:#10090b}.bb-chat-compose textarea{resize:none;min-height:40px;max-height:105px;padding:9px 10px;border:1px solid #44252b;border-radius:9px;background:#0b0708;color:#eee5e2;font:12px/1.45 "Segoe UI",Tahoma,Arial,sans-serif;outline:none}.bb-chat-compose textarea:focus{border-color:#8a3e48}.bb-chat-send{min-width:44px;padding:0 12px;border:1px solid #7f3540;border-radius:9px;background:linear-gradient(180deg,#451820,#2a0e14);color:#f4e5e2;font-size:17px;cursor:pointer}.bb-chat-send:hover{background:linear-gradient(180deg,#5a202a,#351119)}.bb-chat-send:disabled{opacity:.45;cursor:not-allowed;transform:none}
 @media(max-width:720px){#bbGeminiFab{right:12px;bottom:12px;padding:10px 12px}#bbGeminiFab .label{display:none}#bbGeminiChat{right:12px;bottom:64px;width:calc(100vw - 24px);height:min(640px,calc(100vh - 82px));border-radius:12px}.bb-msg{max-width:92%}}
 </style>
-<button id="bbGeminiFab" type="button" aria-label="Mở chat hỏi Bloodborne"><span class="orb">✦</span><span class="label">HỎI BLOODBORNE</span></button>
-<section id="bbGeminiChat" aria-label="Chat Bloodborne với Gemini" aria-hidden="true">
+<style id="bb-gemini-chat-ui-v2">
+/* v0.5 chat UI fix: lock grid rows so the composer never stretches when Settings is hidden. */
+#bbGeminiFab{
+  right:18px;bottom:18px;gap:8px;padding:9px 12px;
+  border-color:#596164;border-radius:6px;
+  background:#101517;color:#d9d4c8;
+  box-shadow:0 12px 32px #000a;
+  letter-spacing:.08em;
+}
+#bbGeminiFab:hover{border-color:#9a8655;background:#171c1f;transform:translateY(-1px)}
+#bbGeminiFab .orb{
+  width:20px;height:20px;border-color:#77683f;border-radius:3px;
+  color:#cfbd85;background:#0b0f11;box-shadow:none;font-size:11px;
+}
+#bbGeminiChat{
+  right:18px;bottom:68px;
+  width:min(430px,calc(100vw - 28px));
+  height:min(550px,calc(100vh - 92px));
+  grid-template-rows:auto auto minmax(0,1fr) auto;
+  border-color:#4b5457;border-radius:9px;
+  background:#0c1012;
+  box-shadow:0 26px 70px #000d;
+  color:#dcd7cc;
+}
+.bb-chat-head{grid-row:1;gap:9px;padding:11px 12px;border-bottom-color:#333b3e;background:#111619}
+.bb-chat-head .sig{
+  width:30px;height:30px;border-color:#6e6242;border-radius:4px;
+  color:#cfbd85;background:#0b0f11;font-size:13px;
+}
+.bb-chat-title strong{font-family:"Segoe UI",Tahoma,Arial,sans-serif!important;font-size:13px;font-weight:700;color:#e7e1d5}
+.bb-chat-title small{margin-top:1px;color:#7f898c;font-size:8px;letter-spacing:.09em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bb-chat-icon{
+  width:29px;height:29px;border-color:#3e474a;border-radius:4px;
+  background:#0d1214;color:#9fa7a9;font-size:13px;
+}
+.bb-chat-icon:hover{border-color:#756942;color:#e9dfc7;background:#171d20}
+#bbGeminiSettings{grid-row:2;padding:10px 12px;border-bottom-color:#333b3e;background:#0f1416}
+.bb-chat-field{gap:5px;margin-bottom:8px}.bb-chat-field label{color:#bca96e;font-size:8px;letter-spacing:.1em}
+.bb-chat-field input,.bb-chat-field select{padding:8px 9px;border-color:#3e474a;border-radius:4px;background:#090d0f;color:#ddd8ce;font-size:11px}
+.bb-chat-field input:focus,.bb-chat-field select:focus{border-color:#89784b;box-shadow:0 0 0 2px rgba(207,189,133,.08)}
+.bb-save-key{border-color:#665b3d;border-radius:4px;background:#17170f;color:#d7c78f}.bb-save-key:hover{background:#201f13}
+.bb-chat-note{color:#778184;font-size:8.5px}.bb-chat-note b{color:#aeb5b6}
+#bbGeminiMessages{
+  grid-row:3;min-height:0;overflow:auto;padding:12px;
+  gap:8px;background:linear-gradient(180deg,#0c1012,#0a0e10);
+}
+.bb-msg{max-width:86%;padding:9px 10px;border-color:#343c3f;border-radius:6px;font-size:11.5px;line-height:1.5}
+.bb-msg.user{background:#1d2326;border-color:#566064;color:#eee8dc}
+.bb-msg.ai{background:#111619;border-color:#343c3f;color:#d8d5cd}
+.bb-msg.system{align-self:stretch;max-width:none;background:#15170f;border-color:#5e5538;color:#cdbd87;font-size:10.5px}
+.bb-msg.error{background:#241214;border-color:#6b363c;color:#e5b5b8}
+.bb-msg .mini{margin-bottom:3px;color:#7e888b;font-size:7.5px;letter-spacing:.1em}
+.bb-chat-compose{
+  grid-row:4;display:grid;grid-template-columns:minmax(0,1fr) 44px;
+  align-items:end;gap:7px;padding:9px 10px;
+  border-top-color:#333b3e;background:#0f1416;
+}
+.bb-chat-compose textarea{
+  box-sizing:border-box;width:100%;height:42px;min-height:42px;max-height:96px;
+  padding:10px 11px;border-color:#414a4d;border-radius:5px;
+  background:#090d0f;color:#e3ded4;font:11.5px/1.45 "Segoe UI",Tahoma,Arial,sans-serif;
+  overflow-y:auto;
+}
+.bb-chat-compose textarea:focus{border-color:#89784b;box-shadow:0 0 0 2px rgba(207,189,133,.07)}
+.bb-chat-send{
+  width:44px;height:42px;min-width:44px;min-height:42px;max-height:42px;
+  padding:0;border-color:#71623e;border-radius:5px;
+  background:#1b1b12;color:#d7c78d;font-size:16px;align-self:end;
+}
+.bb-chat-send:hover{background:#262417;border-color:#9b8753;color:#f1e3ad}
+@media(max-width:720px){
+  #bbGeminiFab{right:10px;bottom:10px;padding:9px 10px}
+  #bbGeminiFab .label{display:none}
+  #bbGeminiChat{
+    right:8px;bottom:58px;width:calc(100vw - 16px);
+    height:min(520px,calc(100vh - 70px));border-radius:7px;
+  }
+  .bb-chat-head{padding:9px 10px}.bb-chat-title small{max-width:150px}
+  .bb-chat-icon{width:28px;height:28px}
+  .bb-msg{max-width:90%}
+  .bb-chat-compose{grid-template-columns:minmax(0,1fr) 42px;padding:8px}
+  .bb-chat-send{width:42px;min-width:42px;height:42px;max-height:42px}
+}
+</style>
+<button id="bbGeminiFab" type="button" aria-label="Mở chat với Gehrman – The First Hunter"><span class="orb">✦</span><span class="label">HỎI GEHRMAN</span></button>
+<section id="bbGeminiChat" aria-label="Chat với Gehrman – The First Hunter" aria-hidden="true">
   <div class="bb-chat-head">
     <div class="sig">✦</div>
-    <div class="bb-chat-title"><strong>Hỏi Bloodborne</strong><small>GEMINI · DÙNG NGỮ CẢNH CHECKLIST HIỆN TẠI</small></div>
+    <div class="bb-chat-title"><strong>Gehrman – The First Hunter</strong><small>CỐ VẤN HUNTER'S DREAM · ĐỌC TIẾN TRÌNH HIỆN TẠI</small></div>
     <button class="bb-chat-icon" id="bbGeminiClear" type="button" title="Xóa hội thoại">↺</button>
     <button class="bb-chat-icon" id="bbGeminiGear" type="button" title="Cài đặt Gemini">⚙</button>
     <button class="bb-chat-icon" id="bbGeminiClose" type="button" title="Đóng">×</button>
@@ -4754,7 +4838,7 @@ openLookupDetail=function(id){
     <div class="bb-chat-field"><label>MODEL</label><select id="bbGeminiModel"><option value="gemini-3.8-flash">Gemini 3.8 Flash</option><option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option></select></div>
   </div>
   <div id="bbGeminiMessages"></div>
-  <form class="bb-chat-compose" id="bbGeminiForm"><textarea id="bbGeminiInput" rows="1" placeholder="Hỏi về quest, boss, build, item…"></textarea><button class="bb-chat-send" id="bbGeminiSend" type="submit" aria-label="Gửi">➤</button></form>
+  <form class="bb-chat-compose" id="bbGeminiForm"><textarea id="bbGeminiInput" rows="1" placeholder="Hunter muốn hỏi gì về cuộc săn?"></textarea><button class="bb-chat-send" id="bbGeminiSend" type="submit" aria-label="Gửi">➤</button></form>
 </section>
 <script id="bb-gemini-chat-script">
 (()=>{
@@ -4770,10 +4854,16 @@ openLookupDetail=function(id){
   function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
   function add(role,text,cls=''){
     const d=document.createElement('div'); d.className='bb-msg '+(role==='user'?'user':role==='ai'?'ai':cls||'system');
-    d.innerHTML=(role==='user'?'<span class="mini">BẠN</span>':role==='ai'?'<span class="mini">GEMINI</span>':'')+esc(text).replace(/\n/g,'<br>');
+    d.innerHTML=(role==='user'?'<span class="mini">HUNTER</span>':role==='ai'?'<span class="mini">GEHRMAN</span>':'')+esc(text).replace(/\n/g,'<br>');
     messages.appendChild(d); messages.scrollTop=messages.scrollHeight; return d;
   }
-  function welcome(){messages.innerHTML='';add('system',localStorage.getItem(KEY)?'Sẵn sàng. Chat sẽ dùng khu vực và checklist đang tick làm ngữ cảnh khi trả lời.':'Chưa có Gemini API key. Nhấn ⚙ để nhập key, sau đó bạn có thể hỏi trực tiếp về Bloodborne.');}
+  function welcome(){
+    messages.innerHTML='';
+    if(!localStorage.getItem(KEY)){add('system','Hunter, ta chưa thể trả lời khi chưa có Gemini API key. Nhấn ⚙ để nhập key, rồi quay lại đây.');return;}
+    let snap='';
+    try{snap=getProgressSnapshot(true);}catch(_){ }
+    add('system',snap?`Ta đã xem qua tiến trình của Hunter. ${snap}`:'Hunter, ta đang theo dõi Progress, MAP và quest NPC trong guide này. Hỏi ta bước tiếp theo, quest dễ fail, boss, item hay đường đi.');
+  }
   welcome();
   function openChat(){chat.classList.add('open');chat.setAttribute('aria-hidden','false');setTimeout(()=>input.focus(),30);if(!localStorage.getItem(KEY)) chat.classList.add('bb-settings-open');}
   function closeChat(){chat.classList.remove('open');chat.setAttribute('aria-hidden','true');}
@@ -4785,21 +4875,118 @@ openLookupDetail=function(id){
   input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();form.requestSubmit();}});
   input.addEventListener('input',()=>{input.style.height='auto';input.style.height=Math.min(105,input.scrollHeight)+'px';});
   function compactText(el){return (el?.innerText||el?.textContent||'').replace(/\s+/g,' ').trim();}
+  function cleanStep(it){
+    const title=String(it?.title||'').replace(/\s+/g,' ').trim();
+    const detail=String(it?.detail||'').replace(/\s+/g,' ').trim();
+    return `${title}${detail?` — ${detail}`:''}`.slice(0,360);
+  }
+  function activeProgressData(){
+    try{
+      const cfg=GUIDES?.[guideId]; if(!cfg)return null;
+      const done=new Set(state?.progress?.[guideId]?.checked||[]);
+      const areaId=sessionState?.progressArea?.[guideId];
+      const area=cfg.areas.find(a=>a.id===areaId)||cfg.areas[0];
+      const idx=cfg.areas.indexOf(area);
+      const areaDone=area.items.filter(it=>done.has(it.id));
+      const areaTodo=area.items.filter(it=>!done.has(it.id));
+      let upcomingArea=null,upcoming=[];
+      if(!areaTodo.length){
+        for(let i=idx+1;i<cfg.areas.length;i++){
+          const todo=cfg.areas[i].items.filter(it=>!done.has(it.id));
+          if(todo.length){upcomingArea=cfg.areas[i];upcoming=todo;break;}
+        }
+      }
+      const flat=cfg.areas.flatMap(a=>a.items.map(it=>({a,it})));
+      const recent=flat.filter(x=>done.has(x.it.id)).slice(-6);
+      return {cfg,done,area,areaDone,areaTodo,upcomingArea,upcoming,recent};
+    }catch(_){return null;}
+  }
+  function getNpcContext(area){
+    try{
+      if(!area||!Array.isArray(NPC_AREAS))return '';
+      const zone=visualKeyFromText(area.name,area.id); if(!zone)return '';
+      const rows=[];
+      for(const npc of NPC_AREAS){
+        const counts=npcProgressCounts(npc); if(!counts.total||counts.done>=counts.total)continue;
+        const next=npc.items.find(st=>!npcStepDone(npc,st)); if(!next)continue;
+        const nz=visualKeyFromText(npcAreaOfStep(next),next.id);
+        if(nz!==zone)continue;
+        const risky=!!next.missable||/backup|cảnh báo|fail|mất|không giết|đừng|trước rom|trước blood moon/i.test(String(next.title||'')+' '+String(next.detail||''));
+        rows.push(`${npc.name}: bước kế tiếp “${next.title}”${risky?' [DỄ MISS/FAIL]':''}`);
+        if(rows.length>=6)break;
+      }
+      return rows.length?`NPC có bước kế tiếp trong vùng hiện tại:\n- ${rows.join('\n- ')}`:'';
+    }catch(_){return '';}
+  }
+  function getMapContext(){
+    try{
+      const a=mapCurrent(); const spec=mapChecklistSpec(a); if(!a||!spec)return a?`MAP đang chọn: ${a.name} (không có checklist đánh số).`:'';
+      const done=new Set(Array.isArray(mapChecklistState?.[spec.key])?mapChecklistState[spec.key]:[]);
+      const todo=spec.items.map((name,i)=>({n:i+1,name})).filter(x=>!done.has(x.n));
+      return [`MAP đang chọn: ${a.name} — ${done.size}/${spec.items.length} đã lấy`,todo.length&&`MAP chưa lấy gần nhất:\n- ${todo.slice(0,6).map(x=>`#${x.n} ${x.name}`).join('\n- ')}`].filter(Boolean).join('\n');
+    }catch(_){return '';}
+  }
+  function getProgressSnapshot(short=false){
+    const p=activeProgressData(); if(!p)return '';
+    const total=p.cfg.areas.reduce((n,a)=>n+a.items.length,0);
+    const doneCount=p.done.size;
+    if(short){
+      const next=(p.areaTodo[0]||p.upcoming[0]);
+      return `${p.cfg.name}: ${doneCount}/${total}. Đang ở ${p.area.name}.${next?` Bước nên làm tiếp: ${next.title}.`:''}`;
+    }
+    const todoNow=(p.areaTodo.length?p.areaTodo:p.upcoming).slice(0,7);
+    const todoArea=p.areaTodo.length?p.area:p.upcomingArea;
+    const risky=todoNow.filter(it=>it.missable||/backup|cảnh báo|fail|mất|không giết|đừng|trước rom|trước blood moon/i.test(String(it.title||'')+' '+String(it.detail||'')));
+    return [
+      `Guide tiến trình đang dùng: ${p.cfg.name}`,
+      `Tổng tiến trình guide: ${doneCount}/${total} bước đã tick`,
+      `Khu vực tiến trình hiện tại: ${p.area.name} — ${p.areaDone.length}/${p.area.items.length} bước đã xong`,
+      p.recent.length&&`Các bước vừa hoàn thành gần đây:\n- ${p.recent.map(x=>cleanStep(x.it)).join('\n- ')}`,
+      todoNow.length&&`Các bước CHƯA tick nên xét tiếp${todoArea?` (${todoArea.name})`:''}:\n- ${todoNow.map(cleanStep).join('\n- ')}`,
+      risky.length&&`Cảnh báo/missable trong nhóm bước sắp tới:\n- ${risky.map(cleanStep).join('\n- ')}`,
+      getNpcContext(p.area),
+      getMapContext()
+    ].filter(Boolean).join('\n');
+  }
   function getGuideContext(){
-    const campaign=compactText(document.querySelector('.campaigns .active'));
-    const area=compactText(document.querySelector('#areas button.selected'));
+    const p=getProgressSnapshot(false);
     const nav=compactText(document.querySelector('.top-nav button.active'));
-    const checked=[...document.querySelectorAll('input[type="checkbox"]:checked')].filter(el=>!chat.contains(el)).slice(-35).map(el=>compactText(el.closest('.task,.quest-step,.map-row,label,li,article,div'))).filter(Boolean).map(t=>t.slice(0,220));
     let detail='';
     const candidates=[...document.querySelectorAll('[role="dialog"],.modal,.detail-panel,.wiki-detail')].filter(el=>el!==chat&&getComputedStyle(el).display!=='none'&&el.offsetParent!==null);
-    if(candidates.length) detail=compactText(candidates[candidates.length-1]).slice(0,700);
-    return [campaign&&`Campaign: ${campaign}`,area&&`Khu vực đang chọn: ${area}`,nav&&`Tab đang xem: ${nav}`,detail&&`Chi tiết đang mở: ${detail}`,checked.length&&`Các mục checklist đang đánh dấu (${checked.length}):\n- ${checked.join('\n- ')}`].filter(Boolean).join('\n');
+    if(candidates.length) detail=compactText(candidates[candidates.length-1]).slice(0,800);
+    return [p,nav&&`Tab đang xem: ${nav}`,detail&&`Chi tiết item/NPC đang mở: ${detail}`].filter(Boolean).join('\n');
   }
   async function askGemini(question){
     const apiKey=(localStorage.getItem(KEY)||'').trim(); if(!apiKey) throw new Error('Chưa có Gemini API key. Nhấn ⚙ để nhập key.');
     const chosen=model.value||'gemini-3.8-flash';
     const guideContext=getGuideContext();
-    const system=`Bạn là trợ lý chuyên Bloodborne cho một fan guide tiếng Việt. Trả lời bằng tiếng Việt, ưu tiên chính xác về quest NPC, mốc dễ fail, vật phẩm, boss, build và progression. Giữ tên riêng trong game bằng tiếng Anh để người chơi dễ tra cứu. Nếu thông tin không chắc chắn, nói rõ mức độ không chắc thay vì bịa. Không spoil vượt quá mức cần thiết nếu người dùng không yêu cầu. Ngữ cảnh lấy từ guide hiện tại:\n${guideContext||'Không có checklist cụ thể đang chọn.'}`;
+    const system=`Bạn đang nhập vai Gehrman – The First Hunter trong Bloodborne, nhưng nhiệm vụ chính là làm cố vấn gameplay chính xác cho Hunter dựa trên checklist của fan guide này.
+
+PERSONA & XƯNG HÔ:
+- Tự xưng là “ta”. Gọi người chơi chủ yếu là “Hunter” hoặc “thợ săn”. Ưu tiên gọi “Hunter” ở đầu câu khi cần cảnh báo hoặc nhấn mạnh; không lặp lại ở mọi câu.
+- Không dùng “ngươi” thường xuyên. Chỉ dùng rất hiếm nếu thật sự cần sắc thái nghiêm trọng; tuyệt đối không nói kiểu trịch thượng.
+- Giọng điềm tĩnh, già dặn, hơi u uẩn, khô và tiết chế; như một First Hunter nhiều kinh nghiệm đang chỉ đường từ Hunter’s Dream.
+- Không nói kiểu trẻ trung, meme, emoji, quá thân mật hoặc quá phấn khích. Không biến mỗi câu trả lời thành độc thoại lore.
+- Câu văn gọn. Có thể mở bằng một câu ngắn mang chất Gehrman rồi đi thẳng vào hướng dẫn thực tế.
+- Khi Hunter làm đúng, xác nhận ngắn như “Tốt, Hunter.” hoặc “Ổn. Cứ tiếp tục.” Khi có nguy cơ miss quest, cảnh báo bình tĩnh như “Hunter, đừng vội vượt mốc này.”
+- Không trích dài lời thoại game và không giả vờ câu do bạn tạo ra là thoại canon. Persona chỉ lấy cảm hứng từ Gehrman.
+- Không tự nhắc mình là Gemini trong câu trả lời bình thường. Chỉ nói về API/model khi có lỗi kỹ thuật hoặc người dùng hỏi trực tiếp.
+- Nếu được hỏi về Gehrman hoặc lore, phân biệt rõ lore canon, suy luận hợp lý và thông tin cộng đồng.
+
+QUY TẮC GAMEPLAY:
+- Coi trạng thái checklist bên dưới là save/progress hiện tại của Hunter.
+- Không bảo Hunter làm lại bước đã tick, trừ khi có lý do rõ ràng.
+- Khi tư vấn “làm gì tiếp”, ưu tiên bước CHƯA tick ở khu vực hiện tại, sau đó mới tới khu vực kế tiếp.
+- Luôn rà NPC dễ fail/miss trước khi khuyên đánh boss hoặc vượt mốc thời gian. Nếu có cảnh báo/backup sắp tới, nêu nó trước.
+- Nếu MAP còn đồ chưa lấy, chỉ nhắc món liên quan hoặc quan trọng; không spam toàn bộ map.
+- Trả lời bằng tiếng Việt; giữ tên boss/NPC/item/khu vực bằng English để dễ tra cứu.
+- Không spoil xa hơn 1 khu vực kế tiếp nếu Hunter không yêu cầu.
+- Nếu checklist và câu hỏi mâu thuẫn, nói rõ đang dựa vào checklist nào và đề nghị Hunter chỉnh tick; không tự đoán.
+- Khi Hunter hỏi chung chung như “giờ làm gì?”, trả lời ngắn theo: (1) NÊN LÀM NGAY, (2) NPC / CẢNH BÁO, (3) BOSS / MỐC CHƯA NÊN VƯỢT nếu có.
+- Nếu thông tin ngoài checklist không chắc chắn, nói rõ mức độ không chắc thay vì bịa.
+
+TRẠNG THÁI GUIDE HIỆN TẠI:
+${guideContext||'Không đọc được tiến trình hiện tại.'}`;
     const contents=[];
     for(const m of history.slice(-8)) contents.push({role:m.role==='ai'?'model':'user',parts:[{text:m.text}]});
     contents.push({role:'user',parts:[{text:question}]});
@@ -4813,7 +5000,7 @@ openLookupDetail=function(id){
   form.addEventListener('submit',async e=>{
     e.preventDefault(); const q=input.value.trim(); if(!q||send.disabled) return;
     add('user',q); input.value=''; input.style.height='auto'; send.disabled=true;
-    const typing=document.createElement('div');typing.className='bb-msg ai';typing.innerHTML='<span class="mini">GEMINI</span><span class="bb-typing"><i></i><i></i><i></i></span>';messages.appendChild(typing);messages.scrollTop=messages.scrollHeight;
+    const typing=document.createElement('div');typing.className='bb-msg ai';typing.innerHTML='<span class="mini">GEHRMAN</span><span class="bb-typing"><i></i><i></i><i></i></span>';messages.appendChild(typing);messages.scrollTop=messages.scrollHeight;
     try{const ans=await askGemini(q);typing.remove();add('ai',ans);history.push({role:'user',text:q},{role:'ai',text:ans});history=history.slice(-10);}catch(err){typing.remove();const d=document.createElement('div');d.className='bb-msg error';d.textContent=err?.message||String(err);messages.appendChild(d);messages.scrollTop=messages.scrollHeight;if(!localStorage.getItem(KEY))chat.classList.add('bb-settings-open');}finally{send.disabled=false;input.focus();}
   });
 })();
