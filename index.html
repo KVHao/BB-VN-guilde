@@ -1728,7 +1728,7 @@ body.lookup-mode #lookupPanel{display:block!important}.lookup-panel[hidden]{disp
 <section class="overall"><div><p class="eyebrow" id="overallLabel">TIẾN TRÌNH TOÀN BỘ</p><strong id="totalCount"></strong></div><div class="progress-block"><span id="totalPercent"></span><progress id="totalProgress" max="100" value="0"></progress><div class="bb-progress-gehrman"><button id="bbAskProgress" type="button" title="Hỏi Gehrman dựa trên checklist tiến trình hiện tại"><span>✦</span> HỎI GEHRMAN</button><small>Đọc checklist hiện tại</small></div></div></section>
 <div class="area-heading"><div class="area-hero" id="areaHero" aria-hidden="true"><span class="area-hero-shade"></span></div><div class="area-heading-copy"><p class="eyebrow" id="areaSubtitle"></p><h2 id="areaTitle"></h2><p id="areaDescription"></p><div class="area-progress-row"><span id="areaProgress"></span><a class="active-guide-link" id="activeGuideSource" href="#" target="_blank" rel="noopener"></a></div></div><span class="area-number" id="areaNumber"></span></div>
 
-<section id="guidePanel" role="region" aria-label="Tiến trình"><div class="guide-mode-note" id="guideModeNote"></div><div class="filters"><input type="search" id="search" placeholder="Tìm trong khu vực…" aria-label="Tìm trong khu vực"><select id="status" aria-label="Lọc trạng thái"><option value="all">Mọi trạng thái</option><option value="todo">Chưa hoàn thành</option><option value="done">Đã hoàn thành</option><option value="missable">Dễ bỏ lỡ</option></select><select id="kind" aria-label="Lọc loại"><option value="all">Mọi loại</option><option value="boss">Boss</option><option value="npc">NPC</option><option value="item">Vật phẩm</option><option value="route">Tiến trình</option></select></div><div id="tasks"></div><div class="bottom-nav"><button id="prev">← Khu vực trước</button><button id="next">Khu vực tiếp →</button></div></section>
+<section id="guidePanel" role="region" aria-label="Tiến trình"><div class="guide-mode-note" id="guideModeNote"></div><div class="filters"><input type="search" id="search" placeholder="Tìm trong khu vực…" aria-label="Tìm trong khu vực"><select id="status" aria-label="Lọc trạng thái"><option value="all">Mọi trạng thái</option><option value="todo">Chưa hoàn thành</option><option value="done">Đã hoàn thành</option><option value="missable">Dễ bỏ lỡ</option></select><select id="kind" aria-label="Lọc loại"><option value="all">Mọi loại</option><option value="boss">Boss</option><option value="npc">NPC</option><option value="item">Vật phẩm</option><option value="route">Tiến trình</option></select><button id="bbAskProgressInline" class="bb-ask-progress-inline" type="button" title="Hỏi Gehrman dựa trên checklist đang xem"><span>✦</span> HỎI GEHRMAN</button></div><div id="tasks"></div><div class="bottom-nav"><button id="prev">← Khu vực trước</button><button id="next">Khu vực tiếp →</button></div></section>
 <section id="mapPanel" role="region" aria-label="Bản đồ" hidden><div class="map-info"><p class="eyebrow">BẢN ĐỒ THEO KHU VỰC</p><h3 id="mapTitle"></h3><p>Bản đồ theo khu vực vẫn được giữ nguyên. Kéo để xem hoặc phóng to từ 25–300%.</p><span id="mapSource">Bản đồ đã nhúng trong HTML</span></div><div class="map-tools"><button id="mapPrev" aria-label="Bản đồ trước" disabled>← Map trước</button><output id="mapCount">0 / 0</output><button id="mapNext" aria-label="Bản đồ tiếp" disabled>Map tiếp →</button><span class="map-tool-separator" aria-hidden="true"></span><button id="zoomOut" aria-label="Thu nhỏ" disabled>−</button><output id="zoomValue">100%</output><button id="zoomIn" aria-label="Phóng to" disabled>+</button><button id="zoomReset" disabled>Vừa khung</button></div><div class="map-viewport" id="mapViewport"><p id="mapEmpty">◇<br>Chưa có map nhúng cho khu vực này<br><small>Hãy chọn khu vực khác trong danh sách bên trái.</small></p><img id="mapImage" alt="Bản đồ khu vực" draggable="false" hidden></div><section class="map-checklist" id="mapChecklist" aria-label="Checklist vật phẩm trên bản đồ" hidden><div class="map-checklist-head"><div><p class="eyebrow">CHECKLIST VẬT PHẨM</p><h4 id="mapChecklistTitle">Item Legend</h4></div><output class="map-checklist-progress" id="mapChecklistProgress">0 / 0</output></div><div class="map-checklist-filters" id="mapChecklistFilters"><button type="button" data-map-filter="all" class="active">TẤT CẢ</button><button type="button" data-map-filter="todo">CHƯA LẤY</button><button type="button" data-map-filter="done">ĐÃ LẤY</button></div><div class="map-checklist-items" id="mapChecklistItems"></div><p class="map-checklist-note" id="mapChecklistNote">Số thứ tự bám theo Item Legend in ngay trên bản đồ. Checklist này lưu riêng, không tính vào TIẾN TRÌNH.</p></section></section>
 <section id="npcPanel" class="npc-panel" role="region" aria-label="NPC" hidden>
   <div class="npc-overview">
@@ -4791,7 +4791,18 @@ openLookupDetail=function(id){
 .bb-msg.ai{background:#111619;border-color:#343c3f;color:#d8d5cd}
 .bb-msg.system{align-self:stretch;max-width:none;background:#15170f;border-color:#5e5538;color:#cdbd87;font-size:10.5px}
 .bb-msg.error{background:#241214;border-color:#6b363c;color:#e5b5b8}
-.bb-msg .mini{margin-bottom:3px;color:#7e888b;font-size:7.5px;letter-spacing:.1em}
+.bb-msg .mini{margin-bottom:5px;color:#7e888b;font-size:7.5px;letter-spacing:.1em}
+.bb-msg.ai{max-width:92%;padding:10px 11px}
+.bb-msg.ai .bb-md{display:block}
+.bb-msg.ai .bb-md-section{margin:10px 0 5px;padding:5px 7px;border-left:2px solid #8e7846;background:#161712;color:#e5d5a0;font-size:10px;font-weight:800;letter-spacing:.45px;text-transform:uppercase}
+.bb-msg.ai .bb-md-section:first-child{margin-top:2px}
+.bb-msg.ai .bb-md-p{margin:5px 0;color:#d7d4cc}
+.bb-msg.ai .bb-md-list{margin:4px 0 7px;padding-left:17px;color:#d7d4cc}
+.bb-msg.ai .bb-md-list li{margin:3px 0;padding-left:1px}
+.bb-msg.ai .bb-md-list li::marker{color:#bda768}
+.bb-msg.ai strong{color:#eee0ae;font-weight:700}
+.bb-msg.ai code{padding:1px 4px;border:1px solid #343c3f;border-radius:3px;background:#0b0f11;color:#cfc7ae;font:10px/1.3 Consolas,monospace}
+.bb-msg.ai .bb-md-sep{height:1px;margin:8px 0;background:#2b3234}
 .bb-chat-compose{
   grid-row:4;display:grid;grid-template-columns:minmax(0,1fr) 44px;
   align-items:end;gap:7px;padding:9px 10px;
@@ -4811,6 +4822,11 @@ openLookupDetail=function(id){
 }
 .bb-chat-send:hover{background:#262417;border-color:#9b8753;color:#f1e3ad}
 
+
+.bb-ask-progress-inline{flex:0 0 auto;border:1px solid #756540!important;background:#171813!important;color:#d7c78d!important;border-radius:3px!important;padding:9px 12px!important;font:700 10px/1.1 "Segoe UI",Tahoma,Arial,sans-serif!important;letter-spacing:.55px;white-space:nowrap}
+.bb-ask-progress-inline:hover{background:#242317!important;border-color:#a28b55!important;color:#f0dfaa!important}
+.bb-ask-progress-inline span{margin-right:4px}
+@media(max-width:900px){.filters .bb-ask-progress-inline{flex:1 1 100%;width:100%}}
 .bb-progress-gehrman{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-top:9px}
 .bb-progress-gehrman button{border:1px solid #756540;background:#171813;color:#d7c78d;border-radius:4px;padding:7px 10px;font:700 10px/1.1 "Segoe UI",Tahoma,Arial,sans-serif;letter-spacing:.65px;cursor:pointer;white-space:nowrap}
 .bb-progress-gehrman button:hover{background:#242317;border-color:#a28b55;color:#f0dfaa}.bb-progress-gehrman button span{margin-right:4px}.bb-progress-gehrman small{font:9px/1.2 "Segoe UI",Tahoma,Arial,sans-serif;color:#776f63;letter-spacing:.25px}
@@ -4859,16 +4875,38 @@ openLookupDetail=function(id){
   const fab=$('#bbGeminiFab'), chat=$('#bbGeminiChat'), close=$('#bbGeminiClose'), gear=$('#bbGeminiGear'), settings=$('#bbGeminiSettings');
   const messages=$('#bbGeminiMessages'), form=$('#bbGeminiForm'), input=$('#bbGeminiInput'), send=$('#bbGeminiSend');
   const keyInput=$('#bbGeminiKey'), save=$('#bbGeminiSave'), model=$('#bbGeminiModel'), clear=$('#bbGeminiClear');
-  const askProgress=$('#bbAskProgress'), quick=$('#bbGehrmanQuick'), quickText=$('#bbGehrmanQuickText'), quickClose=$('#bbGehrmanQuickClose');
+  const askProgress=$('#bbAskProgress'), askProgressInline=$('#bbAskProgressInline'), quick=$('#bbGehrmanQuick'), quickText=$('#bbGehrmanQuickText'), quickClose=$('#bbGehrmanQuickClose');
   if(!fab||!chat) return;
   const KEY='bbv05_gemini_key', MODEL='bbv05_gemini_model';
   let history=[];
   const savedModel=localStorage.getItem(MODEL); if(savedModel) model.value=savedModel;
   const savedKey=localStorage.getItem(KEY)||''; keyInput.value=savedKey;
   function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+  function renderGehrmanText(text){
+    const lines=String(text??'').replace(/\r/g,'').split('\n');
+    const out=[]; let list=[];
+    const flush=()=>{if(!list.length)return;out.push('<ul class="bb-md-list">'+list.map(x=>'<li>'+x+'</li>').join('')+'</ul>');list=[];};
+    const inline=v=>esc(v).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+    for(const raw of lines){
+      const line=raw.trim();
+      if(!line){flush();continue;}
+      if(/^[-—]{3,}$/.test(line)){flush();out.push('<div class="bb-md-sep"></div>');continue;}
+      let m=line.match(/^#{1,4}\s+(.+)$/);
+      if(m){flush();out.push('<div class="bb-md-section">'+inline(m[1])+'</div>');continue;}
+      m=line.match(/^\*\*(.+?)\*\*\s*:?[ ]*$/);
+      if(m){flush();out.push('<div class="bb-md-section">'+inline(m[1])+'</div>');continue;}
+      m=line.match(/^\(?([1-9])\)?[.)]?\s*[-–—:]?\s*\*\*(.+?)\*\*\s*:?[ ]*$/);
+      if(m){flush();out.push('<div class="bb-md-section">'+inline(m[2])+'</div>');continue;}
+      m=line.match(/^[-•]\s+(.+)$/);
+      if(m){list.push(inline(m[1]));continue;}
+      flush();out.push('<div class="bb-md-p">'+inline(line)+'</div>');
+    }
+    flush(); return '<div class="bb-md">'+out.join('')+'</div>';
+  }
   function add(role,text,cls=''){
     const d=document.createElement('div'); d.className='bb-msg '+(role==='user'?'user':role==='ai'?'ai':cls||'system');
-    d.innerHTML=(role==='user'?'<span class="mini">HUNTER</span>':role==='ai'?'<span class="mini">GEHRMAN</span>':'')+esc(text).replace(/\n/g,'<br>');
+    const label=role==='user'?'<span class="mini">HUNTER</span>':role==='ai'?'<span class="mini">GEHRMAN</span>':'';
+    d.innerHTML=label+(role==='ai'?renderGehrmanText(text):esc(text).replace(/\n/g,'<br>'));
     messages.appendChild(d); messages.scrollTop=messages.scrollHeight; return d;
   }
   function welcome(){
@@ -4996,7 +5034,10 @@ QUY TẮC GAMEPLAY:
 - Trả lời bằng tiếng Việt; giữ tên boss/NPC/item/khu vực bằng English để dễ tra cứu.
 - Không spoil xa hơn 1 khu vực kế tiếp nếu Hunter không yêu cầu.
 - Nếu checklist và câu hỏi mâu thuẫn, nói rõ đang dựa vào checklist nào và đề nghị Hunter chỉnh tick; không tự đoán.
-- Khi Hunter hỏi chung chung như “giờ làm gì?”, trả lời ngắn theo: (1) NÊN LÀM NGAY, (2) NPC / CẢNH BÁO, (3) BOSS / MỐC CHƯA NÊN VƯỢT nếu có.
+- Khi Hunter hỏi chung chung như “giờ làm gì?”, trả lời ngắn theo: (1) NÊN LÀM NGAY, (2) NPC / CẢNH BÁO, (3) ĐỒ / MAP QUAN TRỌNG nếu có, (4) BOSS / MỐC CHƯA NÊN VƯỢT nếu có.
+- FORMAT CÂU TRẢ LỜI: dùng các tiêu đề ngắn dạng **NÊN LÀM NGAY**, **NPC / CẢNH BÁO**, **ĐỒ / MAP QUAN TRỌNG**, **BOSS / MỐC CHƯA NÊN VƯỢT**. Dưới mỗi tiêu đề chỉ dùng bullet ngắn, tối đa 1–3 bullet. Không viết đoạn văn dài, không đánh số lồng nhiều cấp, không dùng bảng.
+- Mỗi bullet ưu tiên cấu trúc: hành động trước → địa điểm → lý do/cảnh báo. Chỉ bôi đậm tên item/NPC/boss hoặc từ khóa quan trọng; tránh bôi đậm cả câu.
+- Nếu một mục không có gì đáng nói thì bỏ hẳn mục đó, không ghi “không có”.
 - Nếu thông tin ngoài checklist không chắc chắn, nói rõ mức độ không chắc thay vì bịa.
 
 TRẠNG THÁI GUIDE HIỆN TẠI:
@@ -5071,13 +5112,14 @@ ${guideContext||'Không đọc được tiến trình hiện tại.'}`;
     sendQuestion(prompts[type]||prompts.next,{showUser:true});
   });
   askProgress?.addEventListener('click',()=>sendQuestion('Đọc toàn bộ checklist tiến trình hiện tại của ta và cho ta lời khuyên checkpoint: việc nên làm ngay, NPC/quest dễ fail cần xử lý, đồ MAP quan trọng còn thiếu, và boss/mốc nào chưa nên vượt. Đừng nhắc lại các bước đã tick.',{showUser:true}));
+  askProgressInline?.addEventListener('click',()=>sendQuestion('Đọc toàn bộ checklist tiến trình hiện tại của ta và cho ta lời khuyên checkpoint: việc nên làm ngay, NPC/quest dễ fail cần xử lý, đồ MAP quan trọng còn thiếu, và boss/mốc nào chưa nên vượt. Đừng nhắc lại các bước đã tick.',{showUser:true}));
   document.addEventListener('change',e=>{
     const cb=e.target.closest?.('#tasks .task input[type="checkbox"]');
     if(!cb)return;
     setTimeout(()=>{if(cb.checked)showQuickForProgress(false);else hideQuick();},180);
   },true);
   document.addEventListener('click',e=>{
-    if(quick?.classList.contains('open')&&!quick.contains(e.target)&&!e.target.closest('#bbAskProgress')&&!e.target.closest('#bbGeminiFab')) hideQuick();
+    if(quick?.classList.contains('open')&&!quick.contains(e.target)&&!e.target.closest('#bbAskProgress')&&!e.target.closest('#bbAskProgressInline')&&!e.target.closest('#bbGeminiFab')) hideQuick();
   });
   window.BBGehrman={open:openChat,ask:q=>sendQuestion(q,{showUser:true}),snapshot:()=>getProgressSnapshot(false),quick:()=>showQuickForProgress(true)};
 })();
