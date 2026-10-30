@@ -1858,12 +1858,12 @@ header .header-save-actions .reset-progress:hover{border-color:#744447!important
 <style id="bb-route-guide-v062">
 /* PROGRESS fourth guide: Hunter's Ledger, stage-by-stage NPC tasks and routes */
 #bbRouteDetails[hidden]{display:none!important}
-.bb-route-details{margin:2px 0 17px;display:grid;gap:12px}
+.bb-route-details{margin:2px 0 17px;display:grid;gap:12px;font-family:"Segoe UI","Noto Sans",Tahoma,Arial,sans-serif}
 .bb-route-start,.bb-route-bosses{border:1px solid #5a4b34;border-radius:9px;background:linear-gradient(145deg,rgba(37,30,23,.94),rgba(19,22,20,.96));padding:17px 19px;color:#d9d4c5}
 .bb-route-kicker{display:block;color:#c8a977;font-size:11px;letter-spacing:1.3px;font-weight:800;margin-bottom:9px}
-.bb-route-start>strong{display:block;font-size:18px;color:#f0e7cf;font-family:Georgia,'Times New Roman',serif}
+.bb-route-start>strong{display:block;font-size:17px;line-height:1.5;color:#f0e7cf;font-family:"Segoe UI","Noto Sans",Tahoma,Arial,sans-serif;font-weight:600;letter-spacing:0}
 .bb-route-start p{margin:9px 0 0;line-height:1.65;font-size:13px;color:#c8c6bd}
-.bb-route-start b{color:#e1c99b}
+.bb-route-start b{color:#e1c99b;font-family:inherit;letter-spacing:0}
 .bb-route-open-map{margin-top:12px;border:1px solid #8f714d;border-radius:5px;background:#211c15;padding:9px 13px;color:#e3cfa8;font-size:11px;letter-spacing:.7px;font-weight:800;cursor:pointer}
 .bb-route-open-map:hover,.bb-route-open-map:focus-visible{background:#392c20;outline:1px solid #bca276}
 .bb-route-bosses{padding-bottom:11px}
@@ -1895,13 +1895,8 @@ body.ledger-mode .bb-route-npc-meta span.branch{border-color:#82603e;color:#e2b5
   justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
 .bb-route-overview strong{color:#e0cda5;display:block;font:750 13px/1.5 "Segoe UI",Tahoma,Arial,sans-serif}
 .bb-route-overview p{color:#b7b5aa;margin:4px 0 0;font:12px/1.55 "Segoe UI",Tahoma,Arial,sans-serif;max-width:620px}
-.bb-route-filter-actions{display:flex;gap:6px;flex-wrap:wrap}
-.bb-route-filter-actions button{border:1px solid #69583a;background:#231e16;color:#e1cba9;padding:7px 10px;
-  border-radius:5px;cursor:pointer;font:700 10px/1.4 "Segoe UI",Tahoma,Arial,sans-serif}
-.bb-route-filter-actions button.is-active{background:#4b3620;color:#ffe5b1;border-color:#bd9257}
 body.ledger-mode .bb-route-npc-row .npc-jump{font-family:"Segoe UI",Tahoma,Arial,sans-serif!important;letter-spacing:0!important}
-@media(max-width:600px){.bb-route-overview{padding:12px;gap:9px}.bb-route-filter-actions{width:100%}
-.bb-route-filter-actions button{flex:1 1 auto;min-height:35px}body.ledger-mode #tasks .bb-route-task-heading{margin-top:11px}}
+@media(max-width:600px){.bb-route-overview{padding:12px;gap:9px}body.ledger-mode #tasks .bb-route-task-heading{margin-top:11px}}
 </style>
 </head><body>
 <a class="skip" href="#content">Đến nội dung</a>
@@ -3798,6 +3793,17 @@ function setGuide(id){
   group=current().group;$('search').value='';$('status').value='all';$('kind').value='all';
   saveSession();render();
 }
+function configureProgressKindFilter(){
+  const select=$('kind'), mode=guideId==='ledger'?'ledger':'default';
+  if(select.dataset.filterMode===mode)return;
+  const previous=select.value;
+  const entries=mode==='ledger'
+    ? [['all','Tất cả'],['route','Tiến trình'],['npc','NPC']]
+    : [['all','Mọi loại'],['boss','Boss'],['npc','NPC'],['item','Vật phẩm'],['route','Tiến trình']];
+  select.replaceChildren(...entries.map(([value,label])=>new Option(label,value)));
+  select.dataset.filterMode=mode;
+  select.value=entries.some(([value])=>value===previous)?previous:'all';
+}
 function groupLabel(id){return config().groups.find(g=>g.id===id)?.label||id.toUpperCase();}
 function progress(){
   const items=AREAS.flatMap(a=>a.items),n=items.filter(i=>checked.has(i.id)).length,p=items.length?Math.round(n/items.length*100):0;
@@ -3835,7 +3841,7 @@ function renderLedgerRoutes(){
   const mapButton=mapExists?`<button class="bb-route-open-map" type="button" data-route-map="${escapeHTML(a.mapKey)}">▣ MỞ MAP KHU VỰC</button>`:'';
   const stageConflicts=ledgerRouteConflicts.filter(([x,y])=>a.items.some(i=>i.id===x||i.id===y));
   const conflictNotice=stageConflicts.length?`<div class="bb-route-conflict" role="alert">⚠ Save đang chứa hai lựa chọn loại trừ nhau trong chặng này. Route đã bỏ dấu hoàn thành của cả hai để tránh báo sai. Hãy chọn lại nhánh Hunter thực sự đã thực hiện; ghi chú và dữ liệu NPC cũ vẫn được giữ nguyên.</div>`:'';
-  box.innerHTML=conflictNotice+`<div class="bb-route-overview"><div><strong>NPC / QUEST THEO THỨ TỰ HUNTER’S LEDGER · ${npcItems.length} MỐC</strong><p>${npcItems.length?`Các mốc giữ nguyên thứ tự theo chặng của Ledger. ${linked} mốc khớp 1:1 với checklist NPC; các mốc lựa chọn hoặc bước nhỏ được lưu riêng, không tự tick cả quest.`:'Chặng này không có mốc NPC/Quest trong dữ liệu Ledger; tiếp tục theo các bước di chuyển bên dưới.'}</p></div><div class="bb-route-filter-actions"><button type="button" data-route-filter="npc" class="${$('kind').value==='npc'?'is-active':''}">🎭 CHỈ NPC</button><button type="button" data-route-filter="all" class="${$('kind').value==='all'?'is-active':''}">TẤT CẢ</button></div></div>`+
+  box.innerHTML=conflictNotice+`<div class="bb-route-overview"><div><strong>NPC / QUEST THEO THỨ TỰ HUNTER’S LEDGER · ${npcItems.length} MỐC</strong><p>${npcItems.length?`Các mốc giữ nguyên thứ tự theo chặng của Ledger. ${linked} mốc khớp 1:1 với checklist NPC; các mốc lựa chọn hoặc bước nhỏ được lưu riêng, không tự tick cả quest.`:'Chặng này không có mốc NPC/Quest trong dữ liệu Ledger; tiếp tục theo các bước di chuyển bên dưới.'}</p></div></div>`+
     `<div class="bb-route-start"><span class="bb-route-kicker">CHỈ DẪN · HUNTER’S LEDGER</span><strong>✦ Đèn xuất phát: ${escapeHTML(a.routeLamp)}</strong><p><b>Điều kiện / cách vào:</b> ${escapeHTML(a.routeAccess)}</p>${mapButton}</div>`+
     (bosses.length?`<div class="bb-route-bosses"><span class="bb-route-kicker">ĐƯỜNG ĐẾN BOSS · ${bosses.length} TUYẾN</span>${bosses.map((b,i)=>`<details class="bb-route-boss" ${i===0?'open':''}><summary><span>${escapeHTML(b.boss)}</span><small>ĐÈN: ${escapeHTML(b.lamp)} ▾</small></summary><ol>${b.steps.map(st=>`<li>${escapeHTML(st)}</li>`).join('')}</ol><p class="bb-route-disclaimer">Đây là chỉ đường, không phải xác nhận boss đã bị hạ.</p></details>`).join('')}</div>`:'');
 }
@@ -3855,7 +3861,7 @@ function renderTasks(){
   }).join(''):'<p class="empty">Không có mục phù hợp. Hãy đổi bộ lọc hoặc từ khóa.</p>';
 }
 
-function render(){if(guideId==='ledger')syncLedgerCanonicalChecks();document.body.classList.toggle('ledger-mode',viewName==='guide'&&guideId==='ledger');document.body.classList.toggle('npc-mode',viewName==='npc');document.body.classList.toggle('map-mode',viewName==='map');document.body.classList.toggle('guide-mode',viewName==='guide');document.body.classList.toggle('lookup-mode',viewName==='lookup');document.body.classList.toggle('notes-mode',viewName==='notes');$('hunterNotebookPanel').hidden=viewName!=='notes';$('guidePanel').hidden=viewName!=='guide';$('mapPanel').hidden=viewName!=='map';$('npcPanel').hidden=viewName!=='npc';$('lookupPanel').hidden=viewName!=='lookup';$('topGuide').classList.toggle('active',viewName==='guide');$('topMap').classList.toggle('active',viewName==='map');$('topNpc').classList.toggle('active',viewName==='npc');$('topLookup').classList.toggle('active',viewName==='lookup');$('topNotes').classList.toggle('active',viewName==='notes');if(viewName==='notes'){ $('areaHero').style.backgroundImage='none';window.BBHunterNotebook?.render?.();saveSession();return;}if(viewName==='lookup'){$('areaHero').style.backgroundImage='none';renderLookup();saveSession();return;}if(viewName==='npc'){$('areaHero').style.backgroundImage='none';navigation();renderNpc();saveSession();return;}if(viewName==='map'){$('areaHero').style.backgroundImage='none';navigation();renderMap();saveSession();return;}let a=current();if(a.group!==group){const first=AREAS.find(x=>x.group===group);if(first){sessionState.progressArea[guideId]=first.id;a=first;}else{group=a.group;}}const areas=AREAS.filter(x=>x.group===group),idx=Math.max(0,areas.indexOf(a));navigation();progress();$('areaTitle').textContent=normalizeText(a.name);$('areaSubtitle').textContent=groupLabel(group).toUpperCase()+' / '+String(idx+1).padStart(2,'0');$('areaNumber').textContent=String(idx+1).padStart(2,'0');$('areaDescription').textContent=normalizeText(a.subtitle||'');const hero=heroForArea(a);$('areaHero').style.backgroundImage=hero?`url("${hero}")`:'none';$('prev').disabled=idx===0;$('next').disabled=idx===areas.length-1;$('activeGuideSource').hidden=!config().url;if(config().url)$('activeGuideSource').href=config().url;$('activeGuideSource').textContent=config().url?config().name+' ↗':'';$('guideModeNote').innerHTML=`<strong>GUIDE ĐANG DÙNG</strong> · ${config().url?`<a href="${config().url}" target="_blank" rel="noopener">${escapeHTML(config().name)} ↗</a>`:escapeHTML(config().name)}<br>${escapeHTML(config().note)}`;renderLedgerRoutes();renderTasks();saveSession();}
+function render(){configureProgressKindFilter();if(guideId==='ledger')syncLedgerCanonicalChecks();document.body.classList.toggle('ledger-mode',viewName==='guide'&&guideId==='ledger');document.body.classList.toggle('npc-mode',viewName==='npc');document.body.classList.toggle('map-mode',viewName==='map');document.body.classList.toggle('guide-mode',viewName==='guide');document.body.classList.toggle('lookup-mode',viewName==='lookup');document.body.classList.toggle('notes-mode',viewName==='notes');$('hunterNotebookPanel').hidden=viewName!=='notes';$('guidePanel').hidden=viewName!=='guide';$('mapPanel').hidden=viewName!=='map';$('npcPanel').hidden=viewName!=='npc';$('lookupPanel').hidden=viewName!=='lookup';$('topGuide').classList.toggle('active',viewName==='guide');$('topMap').classList.toggle('active',viewName==='map');$('topNpc').classList.toggle('active',viewName==='npc');$('topLookup').classList.toggle('active',viewName==='lookup');$('topNotes').classList.toggle('active',viewName==='notes');if(viewName==='notes'){ $('areaHero').style.backgroundImage='none';window.BBHunterNotebook?.render?.();saveSession();return;}if(viewName==='lookup'){$('areaHero').style.backgroundImage='none';renderLookup();saveSession();return;}if(viewName==='npc'){$('areaHero').style.backgroundImage='none';navigation();renderNpc();saveSession();return;}if(viewName==='map'){$('areaHero').style.backgroundImage='none';navigation();renderMap();saveSession();return;}let a=current();if(a.group!==group){const first=AREAS.find(x=>x.group===group);if(first){sessionState.progressArea[guideId]=first.id;a=first;}else{group=a.group;}}const areas=AREAS.filter(x=>x.group===group),idx=Math.max(0,areas.indexOf(a));navigation();progress();$('areaTitle').textContent=normalizeText(a.name);$('areaSubtitle').textContent=groupLabel(group).toUpperCase()+' / '+String(idx+1).padStart(2,'0');$('areaNumber').textContent=String(idx+1).padStart(2,'0');$('areaDescription').textContent=normalizeText(a.subtitle||'');const hero=heroForArea(a);$('areaHero').style.backgroundImage=hero?`url("${hero}")`:'none';$('prev').disabled=idx===0;$('next').disabled=idx===areas.length-1;$('activeGuideSource').hidden=!config().url;if(config().url)$('activeGuideSource').href=config().url;$('activeGuideSource').textContent=config().url?config().name+' ↗':'';$('guideModeNote').innerHTML=`<strong>GUIDE ĐANG DÙNG</strong> · ${config().url?`<a href="${config().url}" target="_blank" rel="noopener">${escapeHTML(config().name)} ↗</a>`:escapeHTML(config().name)}<br>${escapeHTML(config().note)}`;renderLedgerRoutes();renderTasks();saveSession();}
 function bbMapQuickNotify(type,area,index=0){
   // Only an explicit map/guide navigation triggers the tip; rendering/restoring a session does not.
   setTimeout(()=>{if(type==='progress')window.BBGehrman?.onProgressAreaSelected?.(area);else window.BBGehrman?.onMapSelected?.(area?.id||'',index);},90);
@@ -3913,8 +3919,6 @@ function renderMap(){
 function applyZoom(){$('zoomValue').textContent=zoom+'%';$('mapImage').style.width=zoom+'%';}
 
 $('bbRouteDetails').addEventListener('click',e=>{
- const f=e.target.closest('[data-route-filter]');
- if(f){$('kind').value=f.dataset.routeFilter;$('status').value='all';$('search').value='';renderLedgerRoutes();renderTasks();return;}
  const b=e.target.closest('[data-route-map]');if(!b)return;const id=b.dataset.routeMap;if(!MAP_AREAS.some(a=>a.id===id))return;switchView('map');selectMapArea(id);
 });
 $('guideSelectToggle').addEventListener('click',()=>{const box=$('guideOptions'),open=box.hidden;box.hidden=!open;$('guideSelectToggle').setAttribute('aria-expanded',String(open));});
